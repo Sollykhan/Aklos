@@ -1,0 +1,25 @@
+# Contenu personnel / perso — jamais versionné, propre à chaque machine
+data/
+backups/
+chroma_db/
+index_state.json
+
+# Environnement Python
+venv/
+__pycache__/
+*.pyc
+
+# Build / empaquetage (fichiers volumineux régénérables)
+build/
+dist/
+*.spec.bak
+
+# Archives et exécutables volumineux (transferts ponctuels, pas du code)
+*.exe
+*.zip
+*.7z
+Aklos_partage/
+zivvYrXt
+
+# Fichiers macOS
+.DS_Store
