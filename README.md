@@ -6,7 +6,7 @@ internet une fois les modèles téléchargés. Pensé pour fonctionner sur du
 matériel modeste (CPU seul, pas de GPU dédié) : ce n'est pas un compromis
 temporaire, c'est le principe de conception.
 
-![Aperçu de l'interface](docs/screenshot.png)
+![Aperçu de l'interface](docs/screenshot.png)h
 
 ## Pourquoi
 
@@ -50,7 +50,7 @@ ollama pull nomic-embed-text
 ### Windows
 
 ```
-cd jarvis-rag
+cd Aklos
 pip install -r requirements.txt
 ```
 
@@ -65,7 +65,7 @@ Tkinter — texte ou fenêtre invisibles) :
 ```
 brew install python git ollama
 brew services start ollama
-cd jarvis-rag
+cd Aklos
 python3 -m venv venv
 source venv/bin/activate
 pip install -r requirements.txt
