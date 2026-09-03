@@ -1,131 +1,104 @@
-# Jarvis RAG — assistant personnel local
+# Aklos — assistant IA personnel, 100% local
 
-Petit projet RAG (Retrieval-Augmented Generation) 100% local, pensé pour
-tourner sur un PC sans GPU dédié (16 Go de RAM, CPU seul). Objectif :
-construire un assistant qui te connaît, sans dépendre d'un cloud tiers ni
-d'un fine-tuning lourd.
+Assistant conversationnel RAG (Retrieval-Augmented Generation) qui tourne
+entièrement sur ta machine, sans cloud, sans abonnement, sans connexion
+internet une fois les modèles téléchargés. Pensé pour fonctionner sur du
+matériel modeste (CPU seul, pas de GPU dédié) : ce n'est pas un compromis
+temporaire, c'est le principe de conception.
+
+![Aperçu de l'interface](docs/screenshot.png)
+
+## Pourquoi
+
+Un assistant qui garde une vraie mémoire de travail — mes notes techniques
+(Python, Rust, sécurité...), la continuité d'un projet d'écriture — sans
+envoyer ces données à un service tiers. Le modèle ne "sait" que ce qu'on
+lui donne à lire ; rien ne sort de la machine.
 
 ## Comment ça marche
 
-1. Tu mets tes fichiers texte (notes, journal, exports de conversations...)
-   dans le dossier `data/`.
-2. `ingest.py` découpe ces fichiers en petits morceaux, calcule leurs
-   embeddings avec Ollama, et les stocke dans une base vectorielle locale
-   (ChromaDB, dossier `chroma_db/`).
-3. `chat.py` prend ta question, retrouve les passages les plus pertinents
-   dans cette base, et les donne comme contexte au modèle de chat
-   (llama3.2:3b) pour qu'il réponde en connaissance de cause.
+1. Des fichiers texte (`.md`/`.txt`) sont déposés dans `data/`.
+2. `ingest.py` les découpe en morceaux, calcule leurs embeddings avec
+   Ollama, et les stocke dans une base vectorielle locale (ChromaDB).
+3. `chat.py` retrouve les passages pertinents pour une question donnée et
+   les fournit comme contexte au modèle de chat (`llama3.2:3b`) avant
+   qu'il ne réponde.
 
-Rien ne sort de ta machine : modèle, embeddings et base de données tournent
-tous en local.
+Deux interfaces au choix : ligne de commande (`chat.py`) ou application
+graphique Tkinter (`Aklos_app.py`, avec une variante de thème visuel dans
+`Aklos_app_theme_rose.py`). Une interface web légère (`aklos_web.py`,
+Flask) permet aussi d'y accéder depuis un autre appareil du même réseau
+(tablette, téléphone) sans rien installer dessus.
 
-## Installation (Windows)
+## Stack technique
 
-### 1. Installer Ollama
+- **Modèles** : [Ollama](https://ollama.com) — `llama3.2:3b` pour la
+  conversation, `nomic-embed-text` pour les embeddings. 100% CPU.
+- **Base vectorielle** : [ChromaDB](https://www.trychroma.com), locale.
+- **Code** : Python — Tkinter pour le bureau, Flask pour le web.
 
-Télécharge et installe Ollama pour Windows :
-https://ollama.com/download/windows
+## Installation
 
-Une fois installé, Ollama tourne en tâche de fond (icône dans la barre des
-tâches) et expose une API locale sur `http://localhost:11434`.
-
-### 2. Télécharger les modèles
-
-Ouvre un terminal (PowerShell ou l'invite de commandes) et lance :
+Prérequis communs : Python 3.9+, et [Ollama](https://ollama.com/download)
+installé.
 
 ```
 ollama pull llama3.2:3b
 ollama pull nomic-embed-text
 ```
 
-Le premier est le modèle de chat (~2 Go), le second sert à générer les
-embeddings (~275 Mo). Les deux tournent bien en CPU only sur ton Core 7 150U
-avec 16 Go de RAM.
-
-### 3. Installer les dépendances Python
-
-D'abord, il faut se placer dans le dossier du projet (celui qui contient
-`ingest.py`, `chat.py`, `requirements.txt`...).
-
-- Si tu as reçu ce dossier via Claude/Cowork, regarde dans le panneau des
-  fichiers de l'application (ou dans ton dossier de téléchargements) : le
-  dossier s'appelle `jarvis-rag`. Fais un clic droit dessus → "Copier
-  l'emplacement" pour récupérer son chemin complet, ou note simplement où
-  il se trouve.
-- Comme tu travailles déjà dans `C:\Users\solka\dev`, le plus simple est de
-  déplacer (ou copier-coller) tout le dossier `jarvis-rag` à cet endroit,
-  pour l'avoir directement sous la main.
-
-Une fois le dossier repéré, ouvre PowerShell et déplace-toi dedans avec
-`cd`, par exemple :
+### Windows
 
 ```
-cd C:\Users\solka\dev\jarvis-rag
-```
-
-Puis installe les dépendances :
-
-```
+cd jarvis-rag
 pip install -r requirements.txt
 ```
 
-(Python 3.9+ recommandé. Si `pip` n'est pas reconnu, utilise `py -m pip
-install -r requirements.txt`.)
+Si `pip` n'est pas reconnu : `py -m pip install -r requirements.txt`.
 
-Astuce : `ingest.py` et `chat.py` doivent être lancés depuis ce même
-dossier (ou en connaissant leur chemin complet), sinon Python ne les
-trouvera pas.
+### macOS
+
+Ollama et Python doivent venir de Homebrew (le Python/Tcl-Tk fourni par
+défaut avec macOS est trop ancien et cause des bugs d'affichage avec
+Tkinter — texte ou fenêtre invisibles) :
+
+```
+brew install python git ollama
+brew services start ollama
+cd jarvis-rag
+python3 -m venv venv
+source venv/bin/activate
+pip install -r requirements.txt
+```
 
 ## Utilisation
 
-1. Ajoute tes documents dans `data/` (fichiers `.md` ou `.txt`). Un fichier
-   `data/moi.md` est déjà présent pour amorcer la base.
-2. Indexe les documents :
+```
+python ingest.py   # indexe (ou réindexe) le contenu de data/
+python chat.py      # démarre le chat en ligne de commande
+```
 
-   ```
-   python ingest.py
-   ```
+Ou `python Aklos_app.py` pour l'interface graphique. Chaque ajout ou
+modification dans `data/` demande une réindexation pour être pris en
+compte.
 
-3. Lance le chat :
-
-   ```
-   python chat.py
-   ```
-
-4. Pose tes questions. Tape `exit` pour quitter.
-
-Chaque fois que tu ajoutes ou modifies des fichiers dans `data/`, relance
-`ingest.py` pour mettre la base à jour.
-
-## Faire grandir la base de connaissances
-
-Quelques pistes pour enrichir `data/` avec de vraies infos sur toi :
-
-- Exporter tes conversations Claude : Paramètres du compte → Confidentialité
-  → Exporter les données. Une fois reçu, dépose les fichiers texte extraits
-  dans `data/`.
-- Ajouter tes notes personnelles, journal, listes de préférences, projets
-  en cours, etc. — un fichier par thème est plus facile à gérer qu'un
-  énorme fichier unique.
+Commandes utiles dans le chat :
+- `apprend famille > texte` — ajoute une info à `data/famille.md`
+  (`apprend > texte` seul te demande où la ranger).
+- `oublie > texte` — cherche les passages correspondants et demande
+  confirmation avant toute suppression.
 
 ## Limites à avoir en tête
 
-- Pas de GPU dédié : la génération sera plus lente qu'avec une carte
-  graphique, mais un modèle 3B reste tout à fait utilisable en usage
-  interactif sur ce PC.
-- Ce projet fait du RAG, pas du fine-tuning : la "personnalité" vient du
-  contexte injecté (prompt système + documents récupérés), pas des poids du
-  modèle. C'est délibéré — c'est l'approche la plus efficace et la plus
-  réaliste sur ce matériel.
-- `ingest.py` réindexe toute la base à chaque exécution (simple mais pas
-  incrémental). Suffisant pour un usage perso avec quelques dizaines de
-  fichiers.
+- Pas de GPU : plus lent qu'avec une carte graphique, mais un modèle 3B
+  reste utilisable en usage interactif sur ce type de machine.
+- C'est du RAG, pas du fine-tuning : la "personnalité" vient du contexte
+  injecté (prompt système + documents récupérés), pas des poids du
+  modèle — choix délibéré, plus réaliste sur ce matériel.
+- `ingest.py` réindexe toute la base à chaque exécution (pas
+  d'incrémental) — suffisant pour un usage personnel de quelques
+  dizaines de fichiers.
 
-## Pour aller plus loin
+## Licence
 
-- Essayer un autre modèle de chat (`qwen2.5:3b`, `phi4-mini` selon
-  disponibilité dans `ollama pull`) en changeant `CHAT_MODEL` dans
-  `chat.py`.
-- Ajouter une interface web légère (ex. Streamlit) par-dessus `chat.py`.
-- Explorer le fine-tuning LoRA en complément, une fois le RAG bien en main,
-  pour ajuster le ton/style du modèle plutôt que ses connaissances.
+MIT — voir [LICENSE](LICENSE).
