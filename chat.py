@@ -7,13 +7,13 @@ Commence une ligne par 'apprend > ...' pour lui apprendre une info.
 - 'apprend famille > texte' l'ajoute directement à data/famille.md
 - 'apprend > texte' (sans préciser de fichier) : Aklos demande où ranger
 - Plusieurs faits séparés par ';' sont enregistrés chacun sur sa propre ligne
-  (ex: 'apprend famille > Charlotte a eu son bac en 2026 ; Lily a eu son
+  (ex: 'apprend famille > Alice a eu son bac en 2026 ; Léo a eu son
   brevet en 2026') au lieu d'être fusionnés en une seule phrase.
 Commence une ligne par 'oublie > texte' pour qu'il oublie une info : il
 cherche, affiche une liste NUMÉROTÉE des lignes trouvées, et attend ta
 confirmation avant de rien supprimer.
-- 'oublie famille > Charlotte' cherche uniquement dans data/famille.md
-- 'oublie > Charlotte' (sans préciser de fichier) cherche dans tout data/
+- 'oublie famille > Alice' cherche uniquement dans data/famille.md
+- 'oublie > Alice' (sans préciser de fichier) cherche dans tout data/
 - Réponds ensuite avec un ou plusieurs numéros (ex: '1' ou '1,3') pour ne
   supprimer QUE ces lignes-là, 'tout' pour tout supprimer, ou autre chose
   pour annuler.
@@ -287,7 +287,7 @@ def learn_fact(fact: str, destination: str = "moi") -> str:
     appli graphique).
 
     Plusieurs faits séparés par ';' sont écrits chacun sur SA PROPRE ligne
-    (ex: 'apprend famille > Charlotte a eu son bac en 2026 ; Lily a eu son
+    (ex: 'apprend famille > Alice a eu son bac en 2026 ; Léo a eu son
     brevet en 2026') plutôt que fusionnés en une phrase — volontairement pas
     laissé au modèle 3B, qui se trompe trop facilement pour ce genre de
     découpage (voir les inversions de relations déjà rencontrées). Et une

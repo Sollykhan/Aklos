@@ -3,7 +3,7 @@ person.py — Convertit les possessifs de la première personne ("mon", "ma",
 "mes") vers la deuxième personne ("ton", "ta", "tes") dans un texte.
 
 Pourquoi : ce que tu écris via 'apprend >' est à TON point de vue
-("Charlotte est ma fille"). Mais quand Aklos te répond, c'est LUI qui te
+("Alice est ma fille"). Mais quand Aklos te répond, c'est LUI qui te
 parle, donc il doit dire "ta fille", pas recopier ton "ma". On le fait ici,
 au moment où le texte est enregistré, plutôt que de compter sur le modèle
 pour bien le reformuler à chaque réponse (il s'est trompé en le faisant lui-même).
