@@ -1,6 +1,6 @@
 """
-Aklos_app_charlotte.py — Variante visuelle d'Aklos pour Charlotte (thème
-noir / rose / or), pour son futur MacBook Air.
+Aklos_app_theme_rose.py — Variante visuelle d'Aklos (thème noir / rose /
+or), pensée pour une seconde installation personnelle.
 
 Même logique, même moteur (chat.py / ingest.py / backup.py) que
 Aklos_app.py — seule la palette de couleurs change. Gardé comme fichier à
@@ -10,7 +10,7 @@ destinés à des installations différentes.
 À placer dans le même dossier que ingest.py et chat.py (jarvis-rag/).
 
 Usage :
-    python Aklos_app_charlotte.py
+    python Aklos_app_theme_rose.py
 """
 import contextlib
 import io
@@ -32,7 +32,7 @@ import chat  # réutilise get_collection / ask / rewrite_query de chat.py
 import ingest  # réindexation directe (pas de subprocess : compatible .app empaqueté)
 import backup  # sauvegarde de data/ (bouton + auto au démarrage)
 
-# --- Thème "Charlotte" : noir profond, rose mauve discret, rose vif, or ---
+# --- Thème rose : noir profond, rose mauve discret, rose vif, or ---
 BG = "#0b0a0a"             # fond principal, noir vrai
 PANEL = "#161112"          # zones de contenu (chat, saisie), noir légèrement teinté
 ACCENT = "#ec5f95"         # rose vif : bouton Envoyer, hover des boutons utilitaires, "Toi"

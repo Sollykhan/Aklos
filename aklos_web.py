@@ -3,7 +3,7 @@ aklos_web.py — Interface web legere pour Aklos, pensee pour etre ouverte
 depuis un iPad (ou tout autre appareil) sur le meme reseau Wi-Fi que la
 machine qui la fait tourner (le Mac, typiquement).
 
-Reutilise le meme moteur (chat.py) que Aklos_app.py / Aklos_app_charlotte.py
+Reutilise le meme moteur (chat.py) que Aklos_app.py / Aklos_app_theme_rose.py
 — juste une interface HTML au lieu de Tkinter, pas de logique dupliquee.
 
 Usage :
